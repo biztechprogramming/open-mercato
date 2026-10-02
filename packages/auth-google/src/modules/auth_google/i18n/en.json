@@ -1,0 +1,13 @@
+{
+  "auth_google.errors.access_denied": "Google sign-in was cancelled.",
+  "auth_google.errors.account_not_found": "No active account matches this Google email. Ask an administrator to invite you first.",
+  "auth_google.errors.domain_not_allowed": "This Google account's domain is not allowed to sign in.",
+  "auth_google.errors.email_unverified": "Your Google email address is not verified.",
+  "auth_google.errors.exchange_failed": "Could not complete Google sign-in. Please try again.",
+  "auth_google.errors.generic": "Google sign-in failed. Please try again.",
+  "auth_google.errors.invalid_state": "Your Google sign-in session expired. Please try again.",
+  "auth_google.errors.invalid_token": "Google returned an invalid sign-in response. Please try again.",
+  "auth_google.errors.not_configured": "Google sign-in is not configured.",
+  "auth_google.login.button": "Continue with Google",
+  "auth_google.login.redirecting": "Redirecting to Google..."
+}

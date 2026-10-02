@@ -55,6 +55,7 @@ COPY packages/channel-apns/package.json ./packages/channel-apns/
 COPY packages/channel-discord/package.json ./packages/channel-discord/
 COPY packages/channel-expo/package.json ./packages/channel-expo/
 COPY packages/channel-fcm/package.json ./packages/channel-fcm/
+COPY packages/auth-google/package.json ./packages/auth-google/
 COPY packages/channel-gmail/package.json ./packages/channel-gmail/
 COPY packages/channel-imap/package.json ./packages/channel-imap/
 COPY packages/channel-resend/package.json ./packages/channel-resend/
@@ -167,6 +168,7 @@ COPY packages/channel-apns/package.json ./packages/channel-apns/
 COPY packages/channel-discord/package.json ./packages/channel-discord/
 COPY packages/channel-expo/package.json ./packages/channel-expo/
 COPY packages/channel-fcm/package.json ./packages/channel-fcm/
+COPY packages/auth-google/package.json ./packages/auth-google/
 COPY packages/channel-gmail/package.json ./packages/channel-gmail/
 COPY packages/channel-imap/package.json ./packages/channel-imap/
 COPY packages/channel-resend/package.json ./packages/channel-resend/
@@ -354,6 +356,7 @@ COPY --from=builder /app/packages/channel-apns/package.json ./packages/channel-a
 COPY --from=builder /app/packages/channel-discord/package.json ./packages/channel-discord/
 COPY --from=builder /app/packages/channel-expo/package.json ./packages/channel-expo/
 COPY --from=builder /app/packages/channel-fcm/package.json ./packages/channel-fcm/
+COPY --from=builder /app/packages/auth-google/package.json ./packages/auth-google/
 COPY --from=builder /app/packages/channel-gmail/package.json ./packages/channel-gmail/
 COPY --from=builder /app/packages/channel-imap/package.json ./packages/channel-imap/
 COPY --from=builder /app/packages/channel-resend/package.json ./packages/channel-resend/
