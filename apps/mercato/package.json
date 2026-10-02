@@ -33,6 +33,7 @@
     "@mikro-orm/postgresql": "^7.1.14",
     "@napi-rs/canvas": "^1.0.8",
     "@open-mercato/ai-assistant": "workspace:*",
+    "@open-mercato/auth-google": "workspace:*",
     "@open-mercato/cache": "workspace:*",
     "@open-mercato/channel-apns": "workspace:*",
     "@open-mercato/channel-discord": "workspace:*",
