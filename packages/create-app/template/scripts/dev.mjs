@@ -219,6 +219,31 @@ const splashPortConfig = (() => {
 
 const runtimeMode = detectDevRuntimeMode()
 const isMonorepo = runtimeMode === 'monorepo'
+
+const localDevEnvFileNames = [
+  '.env',
+  '.env.development',
+  '.env.local',
+  '.env.development.local',
+]
+
+// The launcher binds the public port before Next.js loads `.env`, so a port
+// configured only through APP_URL / PORT in the app's env files would be
+// ignored and the dev server would fall back to 3000. Shell values still win.
+function hydrateDevBaseUrlEnvFromFiles() {
+  const appDir = isMonorepo ? path.join(process.cwd(), 'apps', 'mercato') : process.cwd()
+  for (const key of ['APP_URL', 'NEXT_PUBLIC_APP_URL', 'PORT']) {
+    if (typeof process.env[key] === 'string' && process.env[key].trim() !== '') continue
+    const fileValue = resolveLocalDevEnvFileValue(appDir, key)
+    if (typeof fileValue === 'string' && fileValue.trim() !== '') process.env[key] = fileValue
+  }
+  if (!process.env.PORT) {
+    const configuredPort = resolveDevBaseUrl(process.env).port
+    if (configuredPort) process.env.PORT = String(configuredPort)
+  }
+}
+
+hydrateDevBaseUrlEnvFromFiles()
 const isWindows = process.platform === 'win32'
 const yarnCommand = isWindows ? 'yarn.cmd' : 'yarn'
 const args = process.argv.slice(2)
@@ -241,7 +266,9 @@ const standaloneStageTotal = setupMode ? 5 : 4
 const splashEnabled = !classic && !appOnly && splashPortConfig.enabled
 const autoOpenSplash = splashEnabled && process.stdout.isTTY && process.env.CI !== 'true' && process.env.OM_DEV_AUTO_OPEN !== '0'
 const splashBindHost = resolveSplashBindHost(process.env)
-const publicAppPort = resolveDevBaseUrl(process.env).port ?? 3000
+// PORT is the bind port and APP_URL the public URL; they differ behind a
+// published container port (APP_URL=http://localhost:3700 -> container :3000).
+const publicAppPort = parsePortNumber(process.env.PORT) ?? resolveDevBaseUrl(process.env).port ?? 3000
 const devRuntimeConfig = (() => {
   try {
     return resolveDevRuntimeConfig(process.env, { splashEnabled, publicPort: publicAppPort })
@@ -434,7 +461,7 @@ function resolveExpectedAppBaseUrl() {
 // gateway it is meant to diagnose.
 function resolveRuntimeProbeBaseUrl() {
   if (gatewayMode && devUpstreamPort) return `http://127.0.0.1:${devUpstreamPort}`
-  return resolveExpectedAppBaseUrl()
+  return `http://127.0.0.1:${publicAppPort}`
 }
 
 function resolveExpectedBackendUrl() {
@@ -706,13 +733,6 @@ function buildSplashChildEnv(options = {}) {
     ...(Number.isFinite(options.stageTotal) ? { OM_DEV_SPLASH_STAGE_TOTAL: String(options.stageTotal) } : {}),
   }
 }
-
-const localDevEnvFileNames = [
-  '.env',
-  '.env.development',
-  '.env.local',
-  '.env.development.local',
-]
 
 function resolveLocalDevEnvFileValue(appDir, key) {
   let resolvedValue

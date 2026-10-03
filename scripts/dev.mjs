@@ -461,7 +461,7 @@ function resolveExpectedAppBaseUrl() {
 // gateway it is meant to diagnose.
 function resolveRuntimeProbeBaseUrl() {
   if (gatewayMode && devUpstreamPort) return `http://127.0.0.1:${devUpstreamPort}`
-  return resolveExpectedAppBaseUrl()
+  return `http://127.0.0.1:${publicAppPort}`
 }
 
 function resolveExpectedBackendUrl() {
